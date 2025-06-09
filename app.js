@@ -2,14 +2,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require('mongoose');
 const express = require('express');
+const prompt = require('prompt-sync')();
+const Customer = require('./models/customer');
 
 const connect = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
 }
 
-const prompt = require('prompt-sync')();
+async function main() {
+    await connect();
 
-const username = prompt('What is your name? ');
+    console.log('\nWelcome to the CRM tool!');
+    console.log('\nWhat would you like to do?');
+};
 
-console.log(`Your name is ${username}`);
+main();
