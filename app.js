@@ -26,20 +26,28 @@ async function main() {
         const choice = prompt('Enter your choice: ');
 
         if (choice === '1') {
-            console.log('you selected choice 1')
+            // console.log('\nyou selected choice 1')
+            try {
+                const name = prompt('Enter customer name: ');
+                const age = prompt('Enter customer age: ');
+                await Customer.create({ name, age });
+                console.log('Customer created successfully!');
+            } catch (err) {
+                console.log('I am Error:', err.message);
+            };
         } else if (choice === '2') {
-            console.log('you selected choice 2')
+            console.log('\nyou selected choice 2')
         } else if (choice === '3') {
-            console.log('you selected choice 3')
+            console.log('\nyou selected choice 3')
         } else if (choice === '4') {
-            console.log('you selected choice 4')
+            console.log('\nyou selected choice 4')
         } else if (choice === '5') {
-            console.log('See you later!');
+            console.log('\nSee you later!');
             process.exit();
         } else {
-            console.log('Please choose from menu items 1 - 5');
+            console.log('\nPlease choose from menu items 1 - 5');
         }
     }
 };
 
-main();
+main().catch(err => console.log('I am error:', err));
