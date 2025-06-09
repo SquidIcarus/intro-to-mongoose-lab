@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require('mongoose');
 const express = require('express');
-const prompt = require('prompt-sync')();
+const prompt = require('prompt-sync')({ sigint: true });
 const Customer = require('./models/customer');
 
 const connect = async () => {
@@ -35,21 +35,44 @@ async function main() {
                 console.log('I am Error:', err.message);
             };
         } else if (choice === '2') {
-            // console.log('\nyou selected choice 2');
             try {
                 const customers = await Customer.find();
                 if (customers.length === 0) {
                     console.log('\nNo customers found.');
                 } else {
                     customers.forEach((customer, index) => {
-                        console.log(`\n${index + 1}. id: ${customer.id} -- Name: ${customer.name}, Age: ${customer.age}`);
+                        console.log(`\n${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`);
                     });
                 }
             } catch (err) {
                 console.log('Error fetching customers', err.message);
             }
         } else if (choice === '3') {
-            console.log('\nyou selected choice 3')
+            try {
+                const customers = await Customer.find();
+                console.log('\nBelow is a list of customers: \n');
+                customers.forEach((customer, index) => {
+                    console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`);
+                });
+                const id = prompt('\nCopy and \x1b[32mpaste\x1b[0m the \x1b[32mid\x1b[0m of the customer you would like to update here:\n');
+                const customer = await Customer.findById(id);
+
+                if (!customer) {
+                    console.log('No customer with that ID');
+                } else {
+                    console.log(`\nFOUND customer, \x1b[32mid\x1b[0m: ${customer._id}, \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age};  `)
+                    const newName = prompt('Update name: ');
+                    const newAge = prompt('Update age: ');
+
+                    customer.name = newName;
+                    customer.age = newAge;
+                    await customer.save();
+
+                    console.log('customer updated!')
+                }
+            } catch (err) {
+                console.log('Error updating customers', err.message);
+            }
         } else if (choice === '4') {
             console.log('\nyou selected choice 4')
         } else if (choice === '5') {
