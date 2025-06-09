@@ -15,6 +15,30 @@ async function main() {
 
     console.log('\nWelcome to the CRM tool!');
     console.log('\nWhat would you like to do?');
+
+    while (true) {
+        console.log('\n1. Create customer');
+        console.log('2. View all customers');
+        console.log('3. Update a customer');
+        console.log('4. Delete a customer');
+        console.log('5. quite');
+
+        const choice = prompt('Enter your choice: ');
+
+        if (choice === '1') {
+            console.log('you selected choice 1')
+        } else if (choice === '2') {
+            console.log('you selected choice 2')
+        } else if (choice === '3') {
+            console.log('you selected choice 3')
+        } else if (choice === '4') {
+            console.log('you selected choice 4')
+        } else if (choice === '5') {
+            console.log('See you later!');
+        } else {
+            console.log('Please choose from menu items 1 - 5');
+        }
+    }
 };
 
 main();
