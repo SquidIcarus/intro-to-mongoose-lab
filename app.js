@@ -23,7 +23,7 @@ async function main() {
         console.log('4. Delete a customer');
         console.log('5. Quit');
 
-        const choice = prompt('\nEnter your choice: ');
+        const choice = prompt('\nEnter your choice:\n');
 
         if (choice === '1') {
             try {
@@ -41,9 +41,10 @@ async function main() {
                     console.log('\nNo customers found.');
                 } else {
                     customers.forEach((customer, index) => {
-                        console.log(`\n${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`);
+                        console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age}`);
                     });
                 }
+                prompt('\nPress enter to main main menu...')
             } catch (err) {
                 console.log('Error fetching customers', err.message);
             }
@@ -52,7 +53,7 @@ async function main() {
                 const customers = await Customer.find();
                 console.log('\nBelow is a list of customers: \n');
                 customers.forEach((customer, index) => {
-                    console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`);
+                    console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age}`);
                 });
                 const id = prompt('\nCopy and \x1b[32mpaste\x1b[0m the \x1b[32mid\x1b[0m of the customer you would like to update here:\n');
                 const customer = await Customer.findById(id);
@@ -76,6 +77,8 @@ async function main() {
         } else if (choice === '4') {
             console.log('\nyou selected choice 4')
         } else if (choice === '5') {
+            mongoose.connection.close();
+            console.log('\ndisconnected from MongoDB')
             console.log('\nSee you later!');
             process.exit();
         } else {
