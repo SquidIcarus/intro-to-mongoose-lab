@@ -23,20 +23,31 @@ async function main() {
         console.log('4. Delete a customer');
         console.log('5. Quit');
 
-        const choice = prompt('Enter your choice: ');
+        const choice = prompt('\nEnter your choice: ');
 
         if (choice === '1') {
-            // console.log('\nyou selected choice 1')
             try {
                 const name = prompt('Enter customer name: ');
                 const age = prompt('Enter customer age: ');
-                await Customer.create({ name, age });
-                console.log('Customer created successfully!');
+                const newCustomer = await Customer.create({ name, age });
+                console.log('\nCustomer created: ', newCustomer);
             } catch (err) {
                 console.log('I am Error:', err.message);
             };
         } else if (choice === '2') {
-            console.log('\nyou selected choice 2')
+            // console.log('\nyou selected choice 2');
+            try {
+                const customers = await Customer.find();
+                if (customers.length === 0) {
+                    console.log('\nNo customers found.');
+                } else {
+                    customers.forEach((customer, index) => {
+                        console.log(`\n${index + 1}. id: ${customer.id} -- Name: ${customer.name}, Age: ${customer.age}`);
+                    });
+                }
+            } catch (err) {
+                console.log('Error fetching customers', err.message);
+            }
         } else if (choice === '3') {
             console.log('\nyou selected choice 3')
         } else if (choice === '4') {
