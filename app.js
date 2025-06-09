@@ -51,7 +51,7 @@ async function main() {
         } else if (choice === '3') {
             try {
                 const customers = await Customer.find();
-                console.log('\nBelow is a list of customers: \n');
+                console.log('\nWho would you like to update?\n');
                 customers.forEach((customer, index) => {
                     console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age}`);
                 });
@@ -62,8 +62,8 @@ async function main() {
                     console.log('No customer with that ID');
                 } else {
                     console.log(`\nFOUND customer, \x1b[32mid\x1b[0m: ${customer._id}, \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age};  `)
-                    const newName = prompt('Update name: ');
-                    const newAge = prompt('Update age: ');
+                    const newName = prompt('Update Name: ');
+                    const newAge = prompt('Update Age: ');
 
                     customer.name = newName;
                     customer.age = newAge;
@@ -75,7 +75,28 @@ async function main() {
                 console.log('Error updating customers', err.message);
             }
         } else if (choice === '4') {
-            console.log('\nyou selected choice 4')
+             try {
+                const customers = await Customer.find();
+                console.log('\nWho would you like to delete?\n');
+                customers.forEach((customer, index) => {
+                    console.log(`${index + 1}. \x1b[32mid\x1b[0m: ${customer._id} -- \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age}`);
+                });
+                const id = prompt('\nCopy and \x1b[32mpaste\x1b[0m the \x1b[32mid\x1b[0m of the customer you would like to delete here:\n');
+                const customer = await Customer.findById(id);
+
+                if (!customer) {
+                    console.log('No customer with that ID');
+                } else {
+                    console.log(`\nDELETE customer, \x1b[32mid\x1b[0m: ${customer._id}, \x1b[32mName\x1b[0m: ${customer.name}, \x1b[32mAge\x1b[0m: ${customer.age};  `)
+                    
+                    await customer.deleteOne({ _id: id });
+
+                    console.log('customer deleted!');
+                }
+                prompt('\nPress enter to return to main menu');
+            } catch (err) {
+                console.log('Error updating customers', err.message);
+            }
         } else if (choice === '5') {
             mongoose.connection.close();
             console.log('\ndisconnected from MongoDB')
